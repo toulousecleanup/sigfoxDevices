@@ -39,8 +39,9 @@ Schema:
 Recap
 -----
 
-The devices awakes every 3mn and measures the distance to each sensor and computes the level based on this information.
-the level is a percentage. It represents how filled is the tank to monitor.
+The devices awakes every 3mn and measures the distance between each sensor and the tank and computes the level based on this information.
+The level is a percentage. It represents how filled is the tank to monitor.
+The result is sent to the Sigfox backend and on this backend is configured to send the data to our backend (source: https://github.com/toulousecleanup/backend  /  hosted at: http://toulousecleanup.pythonanywhere.com/) 
 
 
 Device management
