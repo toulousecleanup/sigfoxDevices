@@ -95,11 +95,9 @@ The result is sent to the Sigfox backend and on this backend is configured to se
 **More details on the level computation**
 
 Pseudo-code:
-
-Every 20mn, on wakeup, 
-
 ```
-  For every US:
+Every 20mn, on wakeup, 
+  * For every US:
     * Make a distance measure
     * Compute the measure 'weight_factor':
       * The smallest the distance is (the more the tank is full), the biggest is the 'weight_factor'
@@ -107,12 +105,10 @@ Every 20mn, on wakeup,
       * 'weight_factor' is bounded to 60
       * This 'weight_factor' is to make sure that an US saying 'tank is full' has more weight in the final decision that an US saying 'tank is empty'.
     * Compute the sensor 'weighed measured level' that is the sensor 'measured level' multiplied by 'weight_factor'
+  * Then make the average of *sensor weighed measured level* of all 4 US and apply the saturation: level is always between 0% and 100%.
+  * Send this information to the SigFox backend.
+  * Go back to sleep for 20mn.
 ```
-
-  Then make the average of *sensor weighed measured level* of all 4 US and apply the saturation: level is always between 0% and 100%.
-  Send this information to the SigFox backend.
-  Go back to sleep for 20mn.
-
 If you want more information about  *sensor weighed measured level* and *weight_factor* computation, read the code.
 
 Device management
