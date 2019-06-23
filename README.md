@@ -53,19 +53,16 @@ You can change the values of the variables in sigfox_device/sigfox_device.ino:
   * DIST_US_BOTTOM (in cm in the code)
   * FULL_TANK_DIST (in cm in the code)
 
-To change it, replace:
+To change it, edit:
 ```
 #define DIST_US_BOTTOM 60
 #define FULL_TANK_DIST DIST_US_BOTTOM / 2
 ```
-by your values.
-
 For example DIST_US_BOTTOM=100cm and FULL_TANK_DIST=40cm needs:
 ```
 #define DIST_US_BOTTOM 100
 #define FULL_TANK_DIST 40
 ```
-
 Then, just recompile and upload the code to the card using the Arduino software.
 
 Code compilation and upload
@@ -101,19 +98,19 @@ Pseudo-code:
 
 Every 20mn, on wakeup, 
 
+```
   For every US:
     * Make a distance measure
-    * Compute the measure *weight_factor*:
-      * The smallest the distance is (the more the tank is full), the biggest is the *weight_factor*
-      * *weight_factor* is 1 when tank is empty
-      * *weight_factor* is bounded to 60
-      * This *weight_factor* is to make sure that an US saying 'tank is full' has more weight in the final decision that an US saying 'tank is empty'.
-    * Compute the *sensor weighed measured level* that is the *sensor measured level* multiplied by *weight_factor*
+    * Compute the measure 'weight_factor':
+      * The smallest the distance is (the more the tank is full), the biggest is the 'weight_factor'
+      * 'weight_factor' is 1 when tank is empty
+      * 'weight_factor' is bounded to 60
+      * This 'weight_factor' is to make sure that an US saying 'tank is full' has more weight in the final decision that an US saying 'tank is empty'.
+    * Compute the sensor 'weighed measured level' that is the sensor 'measured level' multiplied by 'weight_factor'
+```
 
   Then make the average of *sensor weighed measured level* of all 4 US and apply the saturation: level is always between 0% and 100%.
-
   Send this information to the SigFox backend.
-
   Go back to sleep for 20mn.
 
 If you want more information about  *sensor weighed measured level* and *weight_factor* computation, read the code.
