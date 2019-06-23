@@ -43,7 +43,7 @@ void reboot() {
 
 void setup() {
 
-  delay(10000); //reprog timer :)
+  delay(10000); // This 10s delay allows you to reprog the Arduino before it goes in LowPower.sleep() :)
 
   for (int i =0; i < us_num; i++) { 
     pinMode(trigPin[i], OUTPUT); // Sets the trigPin as an Output
@@ -69,7 +69,7 @@ void setup() {
 }
 
 void loop() {
-  LowPower.sleep(30000);//3 mn sleep
+  LowPower.sleep(1200000); // in milliseconds <-> 20 mn sleep
 
   level = 0;
   weight_factor_sum = 0;
@@ -104,7 +104,7 @@ void loop() {
         
     weight_factor_sum += weight_factor;
 
-    //Computing level
+    //Computing level:  weighed measured level
     level += (((int)(float(LEVEL_FULL_SCALE) / float(DIST_FULL_SCALE))) * (DIST_US_BOTTOM - distance[i])) * weight_factor;
     
     // Prints the distance on the Serial Monitor
