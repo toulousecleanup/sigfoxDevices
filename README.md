@@ -136,6 +136,12 @@ Some useful links:
   * register a new device to SigFox backend: https://backend.sigfox.com/device/new?groupId=5b0a85d09058c20630bd8054
   * Edit the callback: https://backend.sigfox.com/devicetype/5b0a85d45005747bb0eee2e0/callbacks
 
+**Pay for SigFox service**
+
+Your free trial expires in **March 2020**, to pay for it after this date: https://buy.sigfox.com/ 
+
+Ask Alexis Eskenazi for login/password.
+
 **The Frontend**
 
 The frontend: https://toulousecleanup.github.io/toulousecleanup/data is here to see the latest data.
