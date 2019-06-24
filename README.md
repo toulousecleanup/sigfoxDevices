@@ -7,14 +7,20 @@ These devices are composed of:
 * an Arduino MKRFox1200 
 * 4 Ultrasonic sensors (HC-SR04)
 
-Pinout
-------
+Pinout and start the System
+---------------------------
 
-* ultrasonic1:  trigPin: **6**  /  echoPin: **10**
-* ultrasonic2:  trigPin: **7**  /  echoPin: **11**
-* ultrasonic3:  trigPin: **8**  /  echoPin: **12**
-* ultrasonic4:  trigPin: **9**  /  echoPin: **13**
+**Pinout**:
+  * ultrasonic1:  trigPin: **6**  /  echoPin: **10**
+  * ultrasonic2:  trigPin: **7**  /  echoPin: **11**
+  * ultrasonic3:  trigPin: **8**  /  echoPin: **12**
+  * ultrasonic4:  trigPin: **9**  /  echoPin: **13**
 
+**Start the System**
+
+Just power it on by plugging the USB cable to a PC or an external USB battery. 
+The board will start after 10 seconds (timer to allow you to do a reprog if you want) and will then send its first level measurement to the SigFox backend and go to deep sleep for 20mn.
+Then, every 20mn it will wake up, send a level measurement and go back to sleep.
 
 About Ultrasonic Sensors placement
 ----------------------------------
@@ -74,6 +80,7 @@ Code compilation and upload
   3- Open the file sigfox_device/sigfox_device.ino with Arduino 1.8.x.
 
   4- Follow the document https://www.arduino.cc/en/Guide/MKRFox1200 -> Section *Use your Arduino MKRFOX1200 on the Arduino Desktop IDE* to be able to reprog the Arduino. It explains everything you need to know for communicating / uploading a code to the Arduino.
+  **Note**: With the code currently on the board, **you have 10 seconds** to start the reprog after it has been powered on. Then the board goes in deep sleep for 20mn an even reprog is not available.
 
   5- Once the Arduino is reprog, you can unplug it from the PC and power it via the battery.
 
@@ -114,7 +121,37 @@ If you want more information about  *sensor weighed measured level* and *weight_
 Device management
 -----------------
 
+**Register new devices to SigFox / Update the callback**
+
 The devices are managable on the SigFox backend: https://backend.sigfox.com/device/list
 Ask Alexis Eskenazi for the login / password.
+On this website you can add new devices and configure their callbacks.
+The device type for this device is **'Arduino_DevKit_1'** (callback is already configured).
+
+Some useful links:
+  * register a new device to SigFox backend: https://backend.sigfox.com/device/new?groupId=5b0a85d09058c20630bd8054
+  * Edit the callback: https://backend.sigfox.com/devicetype/5b0a85d45005747bb0eee2e0/callbacks
+
+**The Frontend**
 
 The frontend: https://toulousecleanup.github.io/toulousecleanup/data is here to see the latest data.
+On this website you can add new mail recipients (for Alerts) and see the level of each device.
+
+The payloads
+------------
+
+The SigFox MKRFox1200 based device sends the following payload to the SigFox backend:
+  * level (an unsigned int on 8-bits)
+
+Then, on message reception, the SigFox backend does an HTTP POST to our toulousecleanup backend: http://toulousecleanup.pythonanywhere.com/api/callback_handler/{device} (device is the SigFox device ID).
+The HTTP POST payload is:
+```
+{
+  "device_id":"{device}",
+  "seq_num":{seqNumber},
+  "level":{customData#level}  # The level from SigFox MKRFox1200 payload
+}
+```
+
+**Important Note**:  You can change anything you want in the code of the SigFox device, or even build a new device type (even not SigFox !).
+But the only important thing for the toulousecleanup backend and WebSite to work is that the level measurement are sent respecting the HTTP POST (url and payload) described above.

@@ -69,7 +69,6 @@ void setup() {
 }
 
 void loop() {
-  LowPower.sleep(1200000); // in milliseconds <-> 20 mn sleep
 
   level = 0;
   weight_factor_sum = 0;
@@ -149,4 +148,6 @@ void loop() {
     Serial.print("Status : ");
     Serial.println(ret);
   }
+  
+  LowPower.sleep(1200000); // in milliseconds <-> 20 mn sleep to save the battery before next measurement
 }
