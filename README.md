@@ -151,9 +151,9 @@ Then, on message reception, the SigFox backend does an HTTP POST to our toulouse
 The HTTP POST payload is:
 ```
 {
-  "device_id":"{device}",
-  "seq_num":{seqNumber},
-  "level":{customData#level}  # The level from SigFox MKRFox1200 payload
+  "device_id":"{device}", #0xFFFFFF format
+  "seq_num":{seqNumber}, # uint8
+  "level":{customData#level}  # The level from SigFox MKRFox1200 payload (uint8)
 }
 ```
 
