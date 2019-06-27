@@ -1,7 +1,6 @@
  
 #include <SigFox.h>
 #include <ArduinoLowPower.h>
-#include <math.h>
 
 // defines
 #define DEBUG 1
@@ -45,7 +44,7 @@ void reboot() {
 
 void setup() {
 
-  delay(5000); // This 25s delay allows you to reprog the Arduino before it goes in LowPower.sleep() :)
+  delay(25000); // This 25s delay allows you to reprog the Arduino before it goes in LowPower.sleep() :)
 
   for (int i =0; i < us_num; i++) { 
     pinMode(trigPin[i], OUTPUT); // Sets the trigPin as an Output
@@ -211,7 +210,5 @@ void loop() {
     Serial.println("----------------------------------------\n");
   }
 
-  
-  delay(10000);
-  //LowPower.sleep(1200000); // in milliseconds <-> 20 mn sleep to save the battery before next measurement
+  LowPower.sleep(1800000); // in milliseconds <-> 30 mn sleep to save the battery before next measurement
 }
