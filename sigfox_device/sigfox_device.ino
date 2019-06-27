@@ -27,8 +27,6 @@
 long duration;
 int distance[us_num];
 int weight_factor; // a coefficient to give more weight to us measures with low distance
-int weight_factor_sum;
-int level;
 
 int trigPin[us_num] = {6, 7, 8, 9};
 int echoPin[us_num] = {10, 11, 12, 13};
@@ -47,7 +45,7 @@ void reboot() {
 
 void setup() {
 
-  delay(25000); // This 25s delay allows you to reprog the Arduino before it goes in LowPower.sleep() :)
+  delay(5000); // This 25s delay allows you to reprog the Arduino before it goes in LowPower.sleep() :)
 
   for (int i =0; i < us_num; i++) { 
     pinMode(trigPin[i], OUTPUT); // Sets the trigPin as an Output
@@ -74,8 +72,8 @@ void setup() {
 
 void loop() {
 
-  level = 0;
-  weight_factor_sum = 0;
+  int level = 0;
+  int weight_factor_sum = 0;
   for (int a = 0; a < us_num; ++a)
     distance[a] = 0;
   
@@ -154,7 +152,17 @@ void loop() {
     weight_factor_sum += weight_factor;
 
     //Computing level:  weighed measured level
-    level += (((int)(float(LEVEL_FULL_SCALE) / float(DIST_FULL_SCALE))) * (DIST_US_BOTTOM - distance[i])) * weight_factor;
+    float tmp_level = (DIST_US_BOTTOM - distance[i]);   
+    if (int(tmp_level) > DIST_US_BOTTOM)
+      tmp_level = DIST_US_BOTTOM;
+    if (int(tmp_level) < 0)
+      tmp_level = 0;
+    tmp_level /= DIST_FULL_SCALE;
+    tmp_level *= LEVEL_FULL_SCALE;
+    tmp_level *= weight_factor;
+
+    Serial.println(level);
+    level += int(tmp_level);
     
     // Prints the distance on the Serial Monitor
     if (DEBUG){
@@ -165,6 +173,8 @@ void loop() {
       Serial.print("- Weight factor: ");
       Serial.print(weight_factor);
       Serial.print("- tmp Level: ");
+      Serial.println(tmp_level);
+      Serial.print("- summed Level: ");
       Serial.println(level);
       delay(1);
     }
