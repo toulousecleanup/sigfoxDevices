@@ -187,7 +187,8 @@ void loop() {
   if (level > MAX_LEVEL)
     level = MAX_LEVEL;
   if (level < MIN_LEVEL)
-    level = MIN_LEVEL;
+    level = MIN_LEVEL; 
+
       
   if (DEBUG){
     Serial.print("LEVEL : ");
@@ -200,7 +201,7 @@ void loop() {
   // if the data we want to send is suitable
   SigFox.beginPacket();
   
-  SigFox.write(level); 
+  SigFox.write(uint8_t(level)); 
   
   int ret = SigFox.endPacket();
 
